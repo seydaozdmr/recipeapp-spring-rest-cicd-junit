@@ -26,19 +26,36 @@ public class LoadData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Category category=new Category("American",null);
-        Category category1=new Category("Italian",null);
-        Category category2=new Category("Turk",null);
-        Category category3=new Category("Chinese",null);
-        List<Category> myList=List.of(category,category1,category2,category3);
-        UnitOfMeasure unitOfMeasure=new UnitOfMeasure("Gram");
-        UnitOfMeasure unitOfMeasure1=new UnitOfMeasure("Çay Kaşığı");
-        UnitOfMeasure unitOfMeasure2=new UnitOfMeasure("Yemek Kaşığı");
-        UnitOfMeasure unitOfMeasure3=new UnitOfMeasure("Kepçe");
-        UnitOfMeasure unitOfMeasure4=new UnitOfMeasure("Su Bardağı");
-        categoryRepository.saveAll(myList);
-        unitOfMeasureRepository.saveAll(List.of(unitOfMeasure,unitOfMeasure1,unitOfMeasure2,unitOfMeasure3,unitOfMeasure4));
-        recipeRepository.saveAll(getRecipes());
+        if(categoryRepository.findAll().isEmpty()){
+            Category category=new Category("American",null);
+            Category category1=new Category("Italian",null);
+            Category category2=new Category("Turk",null);
+            Category category3=new Category("Chinese",null);
+            List<Category> myList=List.of(category,category1,category2,category3);
+            categoryRepository.saveAll(myList);
+        }else{
+            System.out.println("Categories are already exist");
+        }
+        if(!unitOfMeasureRepository.findAll().iterator().hasNext()){
+            UnitOfMeasure unitOfMeasure=new UnitOfMeasure("Gram");
+            UnitOfMeasure unitOfMeasure1=new UnitOfMeasure("Çay Kaşığı");
+            UnitOfMeasure unitOfMeasure2=new UnitOfMeasure("Yemek Kaşığı");
+            UnitOfMeasure unitOfMeasure3=new UnitOfMeasure("Kepçe");
+            UnitOfMeasure unitOfMeasure4=new UnitOfMeasure("Su Bardağı");
+
+            unitOfMeasureRepository.saveAll(List.of(unitOfMeasure,unitOfMeasure1,unitOfMeasure2,unitOfMeasure3,unitOfMeasure4));
+
+        }else{
+            System.out.println("Unit of Measure are already exist");
+        }
+
+        if(!recipeRepository.findAll().iterator().hasNext()){
+            recipeRepository.saveAll(getRecipes());
+        }else{
+            System.out.println("Recipes are already exist");
+        }
+
+
     }
 
     private List<Recipe> getRecipes(){
